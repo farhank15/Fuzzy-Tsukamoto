@@ -5,8 +5,6 @@ all: build test
 
 build:
 	@echo "Building..."
-	
-	
 	@go build -o main cmd/api/main.go
 
 # create env
@@ -17,6 +15,7 @@ env:
 # Run the application
 run:
 	@go run cmd/api/main.go
+
 # Create DB container
 docker-run:
 	@if docker compose up --build 2>/dev/null; then \
@@ -38,12 +37,17 @@ docker-down:
 # Test the application
 test:
 	@echo "Testing..."
-	@go test ./... -v
+	@go test -coverprofile=coverage.out ./...
+
+# View coverage report
+coverage:
+	@echo "Generating coverage report..."
+	@go tool cover -html=coverage.out
+
 # Integrations Tests for the application
 itest:
 	@echo "Running integration tests..."
-	@go test ./internal/database -v
-
+	@go test -coverprofile=integration_coverage.out ./internal/database -v
 
 # Run database migrations
 migrate:
@@ -77,4 +81,4 @@ watch:
             fi; \
         fi
 
-.PHONY: all build run test clean watch docker-run docker-down itest migrate fresh-migrate
+.PHONY: all build run test clean watch docker-run docker-down itest migrate fresh-migrate coverage

@@ -29,12 +29,6 @@ type service struct {
 }
 
 var (
-	database   = os.Getenv("BLUEPRINT_DB_DATABASE")
-	password   = os.Getenv("BLUEPRINT_DB_PASSWORD")
-	username   = os.Getenv("BLUEPRINT_DB_USERNAME")
-	port       = os.Getenv("BLUEPRINT_DB_PORT")
-	host       = os.Getenv("BLUEPRINT_DB_HOST")
-	schema     = os.Getenv("BLUEPRINT_DB_SCHEMA")
 	dbInstance *service
 )
 
@@ -43,6 +37,15 @@ func New() Service {
 	if dbInstance != nil {
 		return dbInstance
 	}
+
+	// Ensure environment variables are read at the time of function call
+	database := os.Getenv("BLUEPRINT_DB_DATABASE")
+	password := os.Getenv("BLUEPRINT_DB_PASSWORD")
+	username := os.Getenv("BLUEPRINT_DB_USERNAME")
+	port := os.Getenv("BLUEPRINT_DB_PORT")
+	host := os.Getenv("BLUEPRINT_DB_HOST")
+	schema := os.Getenv("BLUEPRINT_DB_SCHEMA")
+
 	connStr := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable&search_path=%s", username, password, host, port, database, schema)
 	db, err := sql.Open("pgx", connStr)
 	if err != nil {
@@ -110,6 +113,7 @@ func (s *service) Health() map[string]string {
 // If the connection is successfully closed, it returns nil.
 // If an error occurs while closing the connection, it returns the error.
 func (s *service) Close() error {
+	database := os.Getenv("BLUEPRINT_DB_DATABASE")
 	log.Printf("Disconnected from database: %s", database)
 	return s.db.Close()
 }
