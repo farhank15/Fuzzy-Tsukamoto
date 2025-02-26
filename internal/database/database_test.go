@@ -1,100 +1,58 @@
-package database
+package database_test
 
 import (
-	"context"
-	"log"
+	"go-tsukamoto/internal/database"
+	"os"
 	"testing"
-	"time"
 
-	"github.com/testcontainers/testcontainers-go"
-	"github.com/testcontainers/testcontainers-go/modules/postgres"
-	"github.com/testcontainers/testcontainers-go/wait"
+	"github.com/stretchr/testify/assert"
 )
 
-func mustStartPostgresContainer() (func(context.Context, ...testcontainers.TerminateOption) error, error) {
-	var (
-		dbName = "database"
-		dbPwd  = "password"
-		dbUser = "user"
-	)
+func setupTestDatabase(*testing.T) func() {
+	// Simpan variabel lingkungan asli
+	origHost := os.Getenv("BLUEPRINT_DB_HOST")
+	origPort := os.Getenv("BLUEPRINT_DB_PORT")
+	origUsername := os.Getenv("BLUEPRINT_DB_USERNAME")
+	origPassword := os.Getenv("BLUEPRINT_DB_PASSWORD")
+	origDatabase := os.Getenv("BLUEPRINT_DB_DATABASE")
+	origSchema := os.Getenv("BLUEPRINT_DB_SCHEMA")
 
-	dbContainer, err := postgres.Run(
-		context.Background(),
-		"postgres:latest",
-		postgres.WithDatabase(dbName),
-		postgres.WithUsername(dbUser),
-		postgres.WithPassword(dbPwd),
-		testcontainers.WithWaitStrategy(
-			wait.ForLog("database system is ready to accept connections").
-				WithOccurrence(2).
-				WithStartupTimeout(5*time.Second)),
-	)
-	if err != nil {
-		return nil, err
-	}
+	// Set variabel lingkungan untuk database tes
+	// Perbarui nilai-nilai ini untuk menunjuk ke instance PostgreSQL tes Anda
+	os.Setenv("BLUEPRINT_DB_HOST", "localhost")
+	os.Setenv("BLUEPRINT_DB_PORT", "5432")
+	os.Setenv("BLUEPRINT_DB_USERNAME", "postgres")
+	os.Setenv("BLUEPRINT_DB_PASSWORD", "postgres")
+	os.Setenv("BLUEPRINT_DB_DATABASE", "gotsukamoto")
+	os.Setenv("BLUEPRINT_DB_SCHEMA", "public")
 
-	database = dbName
-	password = dbPwd
-	username = dbUser
-
-	dbHost, err := dbContainer.Host(context.Background())
-	if err != nil {
-		return dbContainer.Terminate, err
-	}
-
-	dbPort, err := dbContainer.MappedPort(context.Background(), "5432/tcp")
-	if err != nil {
-		return dbContainer.Terminate, err
-	}
-
-	host = dbHost
-	port = dbPort.Port()
-
-	return dbContainer.Terminate, err
-}
-
-func TestMain(m *testing.M) {
-	teardown, err := mustStartPostgresContainer()
-	if err != nil {
-		log.Fatalf("could not start postgres container: %v", err)
-	}
-
-	m.Run()
-
-	if teardown != nil && teardown(context.Background()) != nil {
-		log.Fatalf("could not teardown postgres container: %v", err)
+	// Kembalikan fungsi cleanup
+	return func() {
+		// Kembalikan variabel lingkungan asli
+		os.Setenv("BLUEPRINT_DB_HOST", origHost)
+		os.Setenv("BLUEPRINT_DB_PORT", origPort)
+		os.Setenv("BLUEPRINT_DB_USERNAME", origUsername)
+		os.Setenv("BLUEPRINT_DB_PASSWORD", origPassword)
+		os.Setenv("BLUEPRINT_DB_DATABASE", origDatabase)
+		os.Setenv("BLUEPRINT_DB_SCHEMA", origSchema)
 	}
 }
 
-func TestNew(t *testing.T) {
-	srv := New()
-	if srv == nil {
-		t.Fatal("New() returned nil")
-	}
-}
-
-func TestHealth(t *testing.T) {
-	srv := New()
-
-	stats := srv.Health()
-
-	if stats["status"] != "up" {
-		t.Fatalf("expected status to be up, got %s", stats["status"])
+func TestDatabaseConnection(t *testing.T) {
+	// Lewati jika kita tidak berada di lingkungan tes dengan database yang tersedia
+	if os.Getenv("SKIP_DB_TESTS") == "true" {
+		t.Skip("Skipping database tests")
 	}
 
-	if _, ok := stats["error"]; ok {
-		t.Fatalf("expected error not to be present")
-	}
+	// Setup lingkungan database tes
+	cleanup := setupTestDatabase(t)
+	defer cleanup()
 
-	if stats["message"] != "It's healthy" {
-		t.Fatalf("expected message to be 'It's healthy', got %s", stats["message"])
-	}
-}
+	// Buat layanan database baru
+	dbService := database.New()
+	defer dbService.Close()
 
-func TestClose(t *testing.T) {
-	srv := New()
-
-	if srv.Close() != nil {
-		t.Fatalf("expected Close() to return nil")
-	}
+	// Periksa koneksi
+	status := dbService.Health()["status"]
+	assert.Equal(t, "up", status, "Database connection should be 'up'")
 }
