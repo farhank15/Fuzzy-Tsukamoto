@@ -12,6 +12,7 @@ import (
 	"go-tsukamoto/internal/app/service/academic"
 	"go-tsukamoto/internal/app/service/achievement"
 	"go-tsukamoto/internal/app/service/activity"
+	"go-tsukamoto/internal/app/service/course"
 	fuzzy "go-tsukamoto/internal/app/service/fuzzy"
 	"go-tsukamoto/internal/app/service/thesis"
 	"go-tsukamoto/internal/app/service/user"
@@ -29,6 +30,7 @@ type Server struct {
 	activityService    activity.ActivityService
 	thesisService      thesis.ThesisService
 	fuzzyService       fuzzy.FuzzyServiceInterface
+	courseService      course.CourseServiceInterface
 }
 
 func NewServer(db *gorm.DB) *http.Server {
@@ -42,6 +44,7 @@ func NewServer(db *gorm.DB) *http.Server {
 		activityService:    activity.NewService(db),
 		thesisService:      thesis.NewService(db),
 		fuzzyService:       fuzzy.NewService(db),
+		courseService:      course.NewService(db),
 	}
 
 	// Declare Server config

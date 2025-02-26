@@ -61,6 +61,15 @@ func (s *Server) RegisterRoutes() http.Handler {
 	fuzzyHandler := handlers.NewFuzzyHandler(s.fuzzyService)
 	router.HandleFunc("/fuzzy", fuzzyHandler.CalculateFuzzy).Methods("POST")
 
+	// Course routes
+	courseHandler := handlers.NewCourseHandler(s.courseService)
+	router.HandleFunc("/course", courseHandler.CreateCourse).Methods("POST")
+	router.HandleFunc("/courses/import", courseHandler.ImportCourses).Methods("POST")
+	router.HandleFunc("/course/{id}", courseHandler.GetCourseByID).Methods("GET")
+	router.HandleFunc("/course", courseHandler.GetCourses).Methods("GET")
+	router.HandleFunc("/course/{id}", courseHandler.UpdateCourse).Methods("PUT")
+	router.HandleFunc("/course/{id}", courseHandler.DeleteCourse).Methods("DELETE")
+
 	// Wrap the router with CORS middleware
 	return middleware.CorsMiddleware(router)
 }

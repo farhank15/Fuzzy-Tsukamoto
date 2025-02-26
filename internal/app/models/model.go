@@ -8,5 +8,6 @@ func GetModelsToMigrate() []interface{} {
 		&Activity{},
 		&Thesis{},
 		&Predicate{},
+		&Course{},
 	}
 }

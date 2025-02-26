@@ -1,0 +1,52 @@
+[
+  {
+    "code": "CS101",
+    "course_name": "Introduction to Computer Science",
+    "credit_course": 3
+  },
+  {
+    "code": "CS102",
+    "course_name": "Data Structures",
+    "credit_course": 4
+  },
+  {
+    "code": "CS103",
+    "course_name": "Algorithms",
+    "credit_course": 3
+  },
+  {
+    "code": "CS104",
+    "course_name": "Operating Systems",
+    "credit_course": 3
+  },
+  {
+    "code": "CS105",
+    "course_name": "Computer Networks",
+    "credit_course": 3
+  },
+  {
+    "code": "CS106",
+    "course_name": "Database Systems",
+    "credit_course": 3
+  },
+  {
+    "code": "CS107",
+    "course_name": "Software Engineering",
+    "credit_course": 3
+  },
+  {
+    "code": "CS108",
+    "course_name": "Artificial Intelligence",
+    "credit_course": 3
+  },
+  {
+    "code": "CS109",
+    "course_name": "Machine Learning",
+    "credit_course": 3
+  },
+  {
+    "code": "CS110",
+    "course_name": "Computer Graphics",
+    "credit_course": 3
+  }
+]
