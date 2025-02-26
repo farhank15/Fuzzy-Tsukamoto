@@ -1,0 +1,26 @@
+{
+  "status": true,
+  "message": "User retrieved successfully",
+  "data": {
+    "id": 1,
+    "username": "johndoe123",
+    "name": "John Doe",
+    "nim": "123456783331",
+    "password": "$2a$10$UMmrr2XgoTVJjCBVz4.ky.4VNG.y6v/xBf24AthoxU5SwgVPhnZgK",
+    "start_year": 2023,
+    "academic": [
+"data di tabel akademic"
+    ],
+    "achievements": [
+"data di tabel achievements"
+    ],
+    "activity": [
+"data di tabel activity"
+    ],
+    "thesis": [
+"data di tabel thesis"
+    ],
+    "created_at": "2025-02-22T01:51:45.700422+07:00",
+    "updated_at": "2025-02-22T01:51:45.700425+07:00"
+  }
+}
