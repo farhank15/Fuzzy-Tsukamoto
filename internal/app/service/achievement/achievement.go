@@ -61,6 +61,29 @@ func (s *achievementService) GetAchievementsByUserID(ctx context.Context, userID
 	if err != nil {
 		return nil, err
 	}
+	// Inisialisasi dengan slice kosong, bukan nil
+	achievements := []*achievement.AchievementResponse{}
+	for _, achievementModel := range achievementModels {
+		achievements = append(achievements, &achievement.AchievementResponse{
+			ID:          achievementModel.ID,
+			UserID:      achievementModel.UserID,
+			Title:       achievementModel.Title,
+			Certificate: achievementModel.Certificate,
+			Rank:        achievementModel.Rank,
+			Level:       string(achievementModel.Level),
+			Year:        achievementModel.Year,
+			CreatedAt:   achievementModel.CreatedAt,
+			UpdatedAt:   achievementModel.UpdatedAt,
+		})
+	}
+	return achievements, nil
+}
+
+func (s *achievementService) GetAllAchievements(ctx context.Context) ([]*achievement.AchievementResponse, error) {
+	achievementModels, err := s.repo.GetAllAchievements(ctx)
+	if err != nil {
+		return nil, err
+	}
 	var achievements []*achievement.AchievementResponse
 	for _, achievementModel := range achievementModels {
 		achievements = append(achievements, &achievement.AchievementResponse{

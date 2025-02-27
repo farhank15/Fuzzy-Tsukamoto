@@ -67,6 +67,15 @@ func (h *ThesisHandler) GetThesesByUserID(w http.ResponseWriter, r *http.Request
 	utils.SuccessResponse(w, http.StatusOK, "Theses retrieved successfully", resp)
 }
 
+func (h *ThesisHandler) GetAllTheses(w http.ResponseWriter, r *http.Request) {
+	resp, err := h.service.GetAllTheses(r.Context())
+	if err != nil {
+		utils.ServerErrorResponse(w, err)
+		return
+	}
+	utils.SuccessResponse(w, http.StatusOK, "All theses retrieved successfully", resp)
+}
+
 func (h *ThesisHandler) UpdateThesis(w http.ResponseWriter, r *http.Request) {
 	var req dto.UpdateThesisRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {

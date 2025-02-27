@@ -9,7 +9,6 @@ import (
 )
 
 func (s *academicService) CreateAcademic(ctx context.Context, req *academic.CreateAcademicRequest) (*academic.AcademicResponse, error) {
-	// Validate if UserID exists
 	user, err := s.userRepo.GetUserByID(ctx, req.UserID)
 	if err != nil {
 		return nil, err
@@ -21,7 +20,6 @@ func (s *academicService) CreateAcademic(ctx context.Context, req *academic.Crea
 	academicModel := &models.Academic{
 		UserID:          req.UserID,
 		Ipk:             req.Ipk,
-		Ips:             req.Ips,
 		RepeatedCourses: req.RepeatedCourses,
 		Semester:        req.Semester,
 		Year:            req.Year,
@@ -36,11 +34,10 @@ func (s *academicService) CreateAcademic(ctx context.Context, req *academic.Crea
 		ID:              academicModel.ID,
 		UserID:          academicModel.UserID,
 		Ipk:             academicModel.Ipk,
-		Ips:             academicModel.Ips,
 		RepeatedCourses: academicModel.RepeatedCourses,
 		Semester:        academicModel.Semester,
 		Year:            academicModel.Year,
-		PredicateID:     academicModel.PredicateID,
+		PredicateID:     &academicModel.PredicateID,
 		CreatedAt:       academicModel.CreatedAt,
 		UpdatedAt:       academicModel.UpdatedAt,
 	}, nil
@@ -58,11 +55,10 @@ func (s *academicService) GetAcademicByID(ctx context.Context, id int) (*academi
 		ID:              academicModel.ID,
 		UserID:          academicModel.UserID,
 		Ipk:             academicModel.Ipk,
-		Ips:             academicModel.Ips,
 		RepeatedCourses: academicModel.RepeatedCourses,
 		Semester:        academicModel.Semester,
 		Year:            academicModel.Year,
-		PredicateID:     academicModel.PredicateID,
+		PredicateID:     &academicModel.PredicateID,
 		CreatedAt:       academicModel.CreatedAt,
 		UpdatedAt:       academicModel.UpdatedAt,
 	}, nil
@@ -73,17 +69,42 @@ func (s *academicService) GetAcademicsByUserID(ctx context.Context, userID int) 
 	if err != nil {
 		return nil, err
 	}
-	var academics []*academic.AcademicResponse
+
+	academics := make([]*academic.AcademicResponse, 0)
+
 	for _, academicModel := range academicModels {
 		academics = append(academics, &academic.AcademicResponse{
 			ID:              academicModel.ID,
 			UserID:          academicModel.UserID,
 			Ipk:             academicModel.Ipk,
-			Ips:             academicModel.Ips,
 			RepeatedCourses: academicModel.RepeatedCourses,
 			Semester:        academicModel.Semester,
 			Year:            academicModel.Year,
-			PredicateID:     academicModel.PredicateID,
+			PredicateID:     &academicModel.PredicateID,
+			CreatedAt:       academicModel.CreatedAt,
+			UpdatedAt:       academicModel.UpdatedAt,
+		})
+	}
+	return academics, nil
+}
+
+func (s *academicService) GetAllAcademics(ctx context.Context) ([]*academic.AcademicResponse, error) {
+	academicModels, err := s.repo.GetAllAcademics(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	academics := make([]*academic.AcademicResponse, 0)
+
+	for _, academicModel := range academicModels {
+		academics = append(academics, &academic.AcademicResponse{
+			ID:              academicModel.ID,
+			UserID:          academicModel.UserID,
+			Ipk:             academicModel.Ipk,
+			RepeatedCourses: academicModel.RepeatedCourses,
+			Semester:        academicModel.Semester,
+			Year:            academicModel.Year,
+			PredicateID:     &academicModel.PredicateID,
 			CreatedAt:       academicModel.CreatedAt,
 			UpdatedAt:       academicModel.UpdatedAt,
 		})
@@ -110,7 +131,6 @@ func (s *academicService) UpdateAcademic(ctx context.Context, id int, req *acade
 	}
 
 	academicModel.Ipk = req.Ipk
-	academicModel.Ips = req.Ips
 	academicModel.RepeatedCourses = req.RepeatedCourses
 	academicModel.Semester = req.Semester
 	academicModel.Year = req.Year
@@ -124,11 +144,10 @@ func (s *academicService) UpdateAcademic(ctx context.Context, id int, req *acade
 		ID:              academicModel.ID,
 		UserID:          academicModel.UserID,
 		Ipk:             academicModel.Ipk,
-		Ips:             academicModel.Ips,
 		RepeatedCourses: academicModel.RepeatedCourses,
 		Semester:        academicModel.Semester,
 		Year:            academicModel.Year,
-		PredicateID:     academicModel.PredicateID,
+		PredicateID:     &academicModel.PredicateID,
 		CreatedAt:       academicModel.CreatedAt,
 		UpdatedAt:       academicModel.UpdatedAt,
 	}, nil

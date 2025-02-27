@@ -31,6 +31,7 @@ type AcademicService interface {
 	CreateAcademic(ctx context.Context, req *academic.CreateAcademicRequest) (*academic.AcademicResponse, error)
 	GetAcademicByID(ctx context.Context, id int) (*academic.AcademicResponse, error)
 	GetAcademicsByUserID(ctx context.Context, userID int) ([]*academic.AcademicResponse, error)
+	GetAllAcademics(ctx context.Context) ([]*academic.AcademicResponse, error)
 	UpdateAcademic(ctx context.Context, id int, req *academic.UpdateAcademicRequest) (*academic.AcademicResponse, error)
 	DeleteAcademic(ctx context.Context, id int) error
 }

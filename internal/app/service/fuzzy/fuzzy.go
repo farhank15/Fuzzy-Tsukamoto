@@ -1,4 +1,4 @@
-package service
+package fuzzy
 
 import (
 	"context"
@@ -24,30 +24,33 @@ type FuzzyService struct {
 }
 
 func (s *FuzzyService) CalculateFuzzy(ctx context.Context, studentID int) (*dto.FuzzyResponseDTO, error) {
-	// 1. Ambil data dari database
-	academic, err := s.academicRepo.GetByStudentID(ctx, studentID)
+	academics, err := s.academicRepo.GetAcademicsByUserID(ctx, studentID)
 	if err != nil {
 		return nil, fmt.Errorf("error getting academic data: %v", err)
 	}
-	if academic == nil {
+	if len(academics) == 0 {
 		return nil, fmt.Errorf("academic data not found for student ID: %d", studentID)
 	}
+	academic := academics[0]
 
-	thesis, err := s.thesisRepo.GetByUserID(ctx, studentID)
+	theses, err := s.thesisRepo.GetThesesByUserID(ctx, studentID)
 	if err != nil {
 		log.Warnf("error getting thesis data: %v", err)
 	}
-	if thesis == nil {
+	var thesis *models.Thesis
+	if len(theses) > 0 {
+		thesis = theses[0]
+	} else {
 		log.Warnf("thesis data not found for student ID: %d", studentID)
 		thesis = &models.Thesis{}
 	}
 
-	achievements, err := s.achievementRepo.GetByStudentID(ctx, studentID)
+	achievements, err := s.achievementRepo.GetAchievementsByUserID(ctx, studentID)
 	if err != nil {
 		log.Warnf("error getting achievement data: %v", err)
 	}
 
-	activities, err := s.activityRepo.GetByStudentID(ctx, studentID)
+	activities, err := s.activityRepo.GetActivitiesByUserID(ctx, studentID)
 	if err != nil {
 		log.Warnf("error getting activity data: %v", err)
 	}
@@ -55,20 +58,28 @@ func (s *FuzzyService) CalculateFuzzy(ctx context.Context, studentID int) (*dto.
 	// 2. Persiapkan data untuk fuzzy
 	bestAchievement := getBestAchievement(achievements)
 	activityCount := len(activities)
-	thesisImpactFactor := calculateThesisImpact(*thesis) // Pastikan mengirimkan nilai, bukan pointer
+
+	// Default values if bestAchievement is nil
+	bestAchievementLevel := ""
+	bestAchievementRank := 0
+	if bestAchievement != nil {
+		bestAchievementLevel = string(bestAchievement.Level)
+		bestAchievementRank = bestAchievement.Rank
+	}
+
+	thesisImpactFactor := calculateThesisImpact(*thesis)
 
 	// 3. Jalankan proses fuzzy menggunakan package yang sudah ada
 	hasilPredicate := inferensia.TsukamotoInference(
-		academic.Ipk,                  // IPK mahasiswa
-		academic.Semester,             // Semester yang telah ditempuh
-		academic.RepeatedCourses,      // Jumlah mata kuliah mengulang
-		bestAchievement.Rank,          // Ranking prestasi terbaik
-		string(bestAchievement.Level), // Level prestasi (internasional/nasional/internal)
-		thesisImpactFactor,            // Impact factor skripsi
-		thesis.Level,                  // Level publikasi skripsi
-		activityCount,                 // Jumlah aktivitas organisasi
+		academic.Ipk,             // IPK mahasiswa
+		academic.Semester,        // Semester yang telah ditempuh
+		academic.RepeatedCourses, // Jumlah mata kuliah mengulang
+		bestAchievementRank,      // Ranking prestasi terbaik
+		bestAchievementLevel,     // Level prestasi (internasional/nasional/internal)
+		thesisImpactFactor,       // Impact factor skripsi
+		thesis.Level,             // Level publikasi skripsi
+		activityCount,            // Jumlah aktivitas organisasi
 	)
-
 	// 4. Update predicateID di tabel academic
 	predicate, err := s.predicateRepo.GetByName(ctx, hasilPredicate)
 	if err != nil {
@@ -76,7 +87,7 @@ func (s *FuzzyService) CalculateFuzzy(ctx context.Context, studentID int) (*dto.
 	}
 
 	// Update academic dengan predicate baru
-	academic.PredicateID = &predicate.ID
+	academic.PredicateID = predicate.ID
 	if err := s.academicRepo.UpdateAcademic(ctx, academic); err != nil {
 		return nil, fmt.Errorf("error updating academic predicate: %v", err)
 	}
@@ -87,8 +98,8 @@ func (s *FuzzyService) CalculateFuzzy(ctx context.Context, studentID int) (*dto.
 		IPK:             academic.Ipk,
 		Semester:        academic.Semester,
 		MataKuliahUlang: academic.RepeatedCourses,
-		PrestasiLevel:   string(bestAchievement.Level),
-		PrestasiRank:    bestAchievement.Rank,
+		PrestasiLevel:   bestAchievementLevel,
+		PrestasiRank:    bestAchievementRank,
 		SkripsiLevel:    thesis.Level,
 		SkripsiImpact:   thesisImpactFactor,
 		JumlahAktivitas: activityCount,
@@ -98,15 +109,13 @@ func (s *FuzzyService) CalculateFuzzy(ctx context.Context, studentID int) (*dto.
 	return response, nil
 }
 
-// Fungsi helper untuk mendapatkan prestasi terbaik
-func getBestAchievement(achievements []models.Achievement) models.Achievement {
-	var best models.Achievement
-	for _, achievement := range achievements {
-		if best.ID == 0 { // Jika belum ada prestasi terbaik
-			best = achievement
-			continue
-		}
+func getBestAchievement(achievements []*models.Achievement) *models.Achievement {
+	if len(achievements) == 0 {
+		return nil
+	}
 
+	best := achievements[0]
+	for _, achievement := range achievements[1:] {
 		// Prioritaskan level yang lebih tinggi
 		if getLevelPriority(achievement.Level) > getLevelPriority(best.Level) {
 			best = achievement
