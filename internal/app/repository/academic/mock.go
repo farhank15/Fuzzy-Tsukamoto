@@ -93,19 +93,34 @@ func (mr *MockAcademicRepositoryInterfaceMockRecorder) GetAcademicsByUserID(ctx,
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAcademicsByUserID", reflect.TypeOf((*MockAcademicRepositoryInterface)(nil).GetAcademicsByUserID), ctx, userID)
 }
 
-// GetByStudentID mocks base method.
-func (m *MockAcademicRepositoryInterface) GetByStudentID(ctx context.Context, studentID int) (*models.Academic, error) {
+// GetAllAcademics mocks base method.
+func (m *MockAcademicRepositoryInterface) GetAllAcademics(ctx context.Context) ([]*models.Academic, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetByStudentID", ctx, studentID)
+	ret := m.ctrl.Call(m, "GetAllAcademics", ctx)
+	ret0, _ := ret[0].([]*models.Academic)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetAllAcademics indicates an expected call of GetAllAcademics.
+func (mr *MockAcademicRepositoryInterfaceMockRecorder) GetAllAcademics(ctx interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAllAcademics", reflect.TypeOf((*MockAcademicRepositoryInterface)(nil).GetAllAcademics), ctx)
+}
+
+// GetByUserID mocks base method.
+func (m *MockAcademicRepositoryInterface) GetByUserID(ctx context.Context, userID int) (*models.Academic, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetByUserID", ctx, userID)
 	ret0, _ := ret[0].(*models.Academic)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// GetByStudentID indicates an expected call of GetByStudentID.
-func (mr *MockAcademicRepositoryInterfaceMockRecorder) GetByStudentID(ctx, studentID interface{}) *gomock.Call {
+// GetByUserID indicates an expected call of GetByUserID.
+func (mr *MockAcademicRepositoryInterfaceMockRecorder) GetByUserID(ctx, userID interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetByStudentID", reflect.TypeOf((*MockAcademicRepositoryInterface)(nil).GetByStudentID), ctx, studentID)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetByUserID", reflect.TypeOf((*MockAcademicRepositoryInterface)(nil).GetByUserID), ctx, userID)
 }
 
 // UpdateAcademic mocks base method.

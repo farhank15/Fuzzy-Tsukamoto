@@ -24,8 +24,7 @@ type FuzzyService struct {
 }
 
 func (s *FuzzyService) CalculateFuzzy(ctx context.Context, studentID int) (*dto.FuzzyResponseDTO, error) {
-	// 1. Ambil data dari database
-	academic, err := s.academicRepo.GetByStudentID(ctx, studentID)
+	academic, err := s.academicRepo.GetByUserID(ctx, studentID)
 	if err != nil {
 		return nil, fmt.Errorf("error getting academic data: %v", err)
 	}
@@ -76,7 +75,7 @@ func (s *FuzzyService) CalculateFuzzy(ctx context.Context, studentID int) (*dto.
 	}
 
 	// Update academic dengan predicate baru
-	academic.PredicateID = &predicate.ID
+	academic.PredicateID = predicate.ID
 	if err := s.academicRepo.UpdateAcademic(ctx, academic); err != nil {
 		return nil, fmt.Errorf("error updating academic predicate: %v", err)
 	}

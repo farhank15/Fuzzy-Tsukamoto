@@ -55,6 +55,22 @@ func TestGetAcademicsByUserID(t *testing.T) {
 	assert.Equal(t, 1, academics[0].ID)
 }
 
+func TestGetAllAcademics(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	mockRepo := academic.NewMockAcademicRepositoryInterface(ctrl)
+	mockRepo.EXPECT().GetAllAcademics(gomock.Any()).Return([]*models.Academic{{ID: 1}, {ID: 2}}, nil)
+
+	ctx := context.Background()
+	academics, err := mockRepo.GetAllAcademics(ctx)
+	assert.NoError(t, err)
+	assert.NotNil(t, academics)
+	assert.Len(t, academics, 2)
+	assert.Equal(t, 1, academics[0].ID)
+	assert.Equal(t, 2, academics[1].ID)
+}
+
 func TestUpdateAcademic(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
@@ -82,29 +98,29 @@ func TestDeleteAcademic(t *testing.T) {
 	assert.NoError(t, err)
 }
 
-func TestGetByStudentID(t *testing.T) {
+func TestGetByUserID(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
 	mockRepo := academic.NewMockAcademicRepositoryInterface(ctrl)
-	mockRepo.EXPECT().GetByStudentID(gomock.Any(), 1).Return(&models.Academic{ID: 1}, nil)
+	mockRepo.EXPECT().GetByUserID(gomock.Any(), 1).Return(&models.Academic{ID: 1}, nil)
 
 	ctx := context.Background()
-	academic, err := mockRepo.GetByStudentID(ctx, 1)
+	academic, err := mockRepo.GetByUserID(ctx, 1)
 	assert.NoError(t, err)
 	assert.NotNil(t, academic)
 	assert.Equal(t, 1, academic.ID)
 }
 
-func TestGetByStudentID_NotFound(t *testing.T) {
+func TestGetByUserID_NotFound(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
 	mockRepo := academic.NewMockAcademicRepositoryInterface(ctrl)
-	mockRepo.EXPECT().GetByStudentID(gomock.Any(), 1).Return(nil, gorm.ErrRecordNotFound)
+	mockRepo.EXPECT().GetByUserID(gomock.Any(), 1).Return(nil, gorm.ErrRecordNotFound)
 
 	ctx := context.Background()
-	academic, err := mockRepo.GetByStudentID(ctx, 1)
+	academic, err := mockRepo.GetByUserID(ctx, 1)
 	assert.Error(t, err)
 	assert.Nil(t, academic)
 	assert.True(t, errors.Is(err, gorm.ErrRecordNotFound))

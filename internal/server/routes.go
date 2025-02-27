@@ -38,6 +38,7 @@ func (s *Server) RegisterRoutes() http.Handler {
 	router.HandleFunc("/academic", academicHandler.CreateAcademic).Methods("POST")
 	router.HandleFunc("/academic/{id}", academicHandler.GetAcademicByID).Methods("GET")
 	router.HandleFunc("/academic/user/{user_id}", academicHandler.GetAcademicsByUserID).Methods("GET")
+	router.HandleFunc("/academic", academicHandler.GetAllAcademics).Methods("GET")
 	router.HandleFunc("/academic/{id}", academicHandler.UpdateAcademic).Methods("PUT")
 	router.HandleFunc("/academic/{id}", academicHandler.DeleteAcademic).Methods("DELETE")
 
