@@ -61,7 +61,8 @@ func (s *achievementService) GetAchievementsByUserID(ctx context.Context, userID
 	if err != nil {
 		return nil, err
 	}
-	var achievements []*achievement.AchievementResponse
+	// Inisialisasi dengan slice kosong, bukan nil
+	achievements := []*achievement.AchievementResponse{}
 	for _, achievementModel := range achievementModels {
 		achievements = append(achievements, &achievement.AchievementResponse{
 			ID:          achievementModel.ID,

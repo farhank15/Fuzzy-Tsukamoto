@@ -52,7 +52,9 @@ func (s *courseService) GetCourses(ctx context.Context) ([]*course.CourseRespons
 	if err != nil {
 		return nil, err
 	}
-	var courses []*course.CourseResponse
+
+	courses := []*course.CourseResponse{}
+
 	for _, courseModel := range courseModels {
 		courses = append(courses, &course.CourseResponse{
 			ID:           courseModel.ID,

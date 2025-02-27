@@ -70,6 +70,9 @@ func (s *thesisService) GetThesesByUserID(ctx context.Context, userID int) ([]*t
 	if err != nil {
 		return nil, err
 	}
+	if len(thesisModels) == 0 {
+		return []*thesis.ThesisResponse{}, nil
+	}
 	var theses []*thesis.ThesisResponse
 	for _, thesisModel := range thesisModels {
 		theses = append(theses, &thesis.ThesisResponse{
