@@ -93,34 +93,19 @@ func (mr *MockActivityRepositoryInterfaceMockRecorder) GetActivityByID(ctx, id i
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetActivityByID", reflect.TypeOf((*MockActivityRepositoryInterface)(nil).GetActivityByID), ctx, id)
 }
 
-// GetByStudentID mocks base method.
-func (m *MockActivityRepositoryInterface) GetByStudentID(ctx context.Context, studentID int) ([]models.Activity, error) {
+// GetAllActivities mocks base method.
+func (m *MockActivityRepositoryInterface) GetAllActivities(ctx context.Context) ([]*models.Activity, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetByStudentID", ctx, studentID)
-	ret0, _ := ret[0].([]models.Activity)
+	ret := m.ctrl.Call(m, "GetAllActivities", ctx)
+	ret0, _ := ret[0].([]*models.Activity)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// GetByStudentID indicates an expected call of GetByStudentID.
-func (mr *MockActivityRepositoryInterfaceMockRecorder) GetByStudentID(ctx, studentID interface{}) *gomock.Call {
+// GetAllActivities indicates an expected call of GetAllActivities.
+func (mr *MockActivityRepositoryInterfaceMockRecorder) GetAllActivities(ctx interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetByStudentID", reflect.TypeOf((*MockActivityRepositoryInterface)(nil).GetByStudentID), ctx, studentID)
-}
-
-// GetUserByID mocks base method.
-func (m *MockActivityRepositoryInterface) GetUserByID(ctx context.Context, id int) (*models.Users, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetUserByID", ctx, id)
-	ret0, _ := ret[0].(*models.Users)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// GetUserByID indicates an expected call of GetUserByID.
-func (mr *MockActivityRepositoryInterfaceMockRecorder) GetUserByID(ctx, id interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetUserByID", reflect.TypeOf((*MockActivityRepositoryInterface)(nil).GetUserByID), ctx, id)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAllActivities", reflect.TypeOf((*MockActivityRepositoryInterface)(nil).GetAllActivities), ctx)
 }
 
 // UpdateActivity mocks base method.

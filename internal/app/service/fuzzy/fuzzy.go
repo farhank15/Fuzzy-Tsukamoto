@@ -24,29 +24,33 @@ type FuzzyService struct {
 }
 
 func (s *FuzzyService) CalculateFuzzy(ctx context.Context, studentID int) (*dto.FuzzyResponseDTO, error) {
-	academic, err := s.academicRepo.GetByUserID(ctx, studentID)
+	academics, err := s.academicRepo.GetAcademicsByUserID(ctx, studentID)
 	if err != nil {
 		return nil, fmt.Errorf("error getting academic data: %v", err)
 	}
-	if academic == nil {
+	if len(academics) == 0 {
 		return nil, fmt.Errorf("academic data not found for student ID: %d", studentID)
 	}
+	academic := academics[0]
 
-	thesis, err := s.thesisRepo.GetByUserID(ctx, studentID)
+	theses, err := s.thesisRepo.GetThesesByUserID(ctx, studentID)
 	if err != nil {
 		log.Warnf("error getting thesis data: %v", err)
 	}
-	if thesis == nil {
+	var thesis *models.Thesis
+	if len(theses) > 0 {
+		thesis = theses[0]
+	} else {
 		log.Warnf("thesis data not found for student ID: %d", studentID)
 		thesis = &models.Thesis{}
 	}
 
-	achievements, err := s.achievementRepo.GetByStudentID(ctx, studentID)
+	achievements, err := s.achievementRepo.GetAchievementsByUserID(ctx, studentID)
 	if err != nil {
 		log.Warnf("error getting achievement data: %v", err)
 	}
 
-	activities, err := s.activityRepo.GetByStudentID(ctx, studentID)
+	activities, err := s.activityRepo.GetActivitiesByUserID(ctx, studentID)
 	if err != nil {
 		log.Warnf("error getting activity data: %v", err)
 	}
@@ -97,11 +101,10 @@ func (s *FuzzyService) CalculateFuzzy(ctx context.Context, studentID int) (*dto.
 	return response, nil
 }
 
-// Fungsi helper untuk mendapatkan prestasi terbaik
-func getBestAchievement(achievements []models.Achievement) models.Achievement {
-	var best models.Achievement
+func getBestAchievement(achievements []*models.Achievement) *models.Achievement {
+	var best *models.Achievement
 	for _, achievement := range achievements {
-		if best.ID == 0 { // Jika belum ada prestasi terbaik
+		if best == nil { // Jika belum ada prestasi terbaik
 			best = achievement
 			continue
 		}

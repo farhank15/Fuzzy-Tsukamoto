@@ -108,21 +108,6 @@ func (mr *MockAcademicRepositoryInterfaceMockRecorder) GetAllAcademics(ctx inter
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAllAcademics", reflect.TypeOf((*MockAcademicRepositoryInterface)(nil).GetAllAcademics), ctx)
 }
 
-// GetByUserID mocks base method.
-func (m *MockAcademicRepositoryInterface) GetByUserID(ctx context.Context, userID int) (*models.Academic, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetByUserID", ctx, userID)
-	ret0, _ := ret[0].(*models.Academic)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// GetByUserID indicates an expected call of GetByUserID.
-func (mr *MockAcademicRepositoryInterfaceMockRecorder) GetByUserID(ctx, userID interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetByUserID", reflect.TypeOf((*MockAcademicRepositoryInterface)(nil).GetByUserID), ctx, userID)
-}
-
 // UpdateAcademic mocks base method.
 func (m *MockAcademicRepositoryInterface) UpdateAcademic(ctx context.Context, academic *models.Academic) error {
 	m.ctrl.T.Helper()

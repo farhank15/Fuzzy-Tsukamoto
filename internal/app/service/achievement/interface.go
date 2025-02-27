@@ -25,6 +25,7 @@ type AchievementService interface {
 	CreateAchievement(ctx context.Context, req *achievement.CreateAchievementRequest) (*achievement.AchievementResponse, error)
 	GetAchievementByID(ctx context.Context, id int) (*achievement.AchievementResponse, error)
 	GetAchievementsByUserID(ctx context.Context, userID int) ([]*achievement.AchievementResponse, error)
+	GetAllAchievements(ctx context.Context) ([]*achievement.AchievementResponse, error)
 	UpdateAchievement(ctx context.Context, id int, req *achievement.UpdateAchievementRequest) (*achievement.AchievementResponse, error)
 	DeleteAchievement(ctx context.Context, id int) error
 }

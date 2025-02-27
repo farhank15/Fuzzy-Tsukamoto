@@ -9,12 +9,11 @@ import (
 
 type ActivityRepositoryInterface interface {
 	CreateActivity(ctx context.Context, activity *models.Activity) error
-	GetByStudentID(ctx context.Context, studentID int) ([]models.Activity, error)
 	GetActivityByID(ctx context.Context, id int) (*models.Activity, error)
 	GetActivitiesByUserID(ctx context.Context, userID int) ([]*models.Activity, error)
+	GetAllActivities(ctx context.Context) ([]*models.Activity, error)
 	UpdateActivity(ctx context.Context, activity *models.Activity) error
 	DeleteActivity(ctx context.Context, id int) error
-	GetUserByID(ctx context.Context, id int) (*models.Users, error)
 }
 
 type activityRepository struct {

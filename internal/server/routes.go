@@ -30,6 +30,7 @@ func (s *Server) RegisterRoutes() http.Handler {
 	router.HandleFunc("/achievement", achievementHandler.CreateAchievement).Methods("POST")
 	router.HandleFunc("/achievement/{id}", achievementHandler.GetAchievementByID).Methods("GET")
 	router.HandleFunc("/achievement/user/{user_id}", achievementHandler.GetAchievementsByUserID).Methods("GET")
+	router.HandleFunc("/achievement", achievementHandler.GetAllAchievements).Methods("GET")
 	router.HandleFunc("/achievement/{id}", achievementHandler.UpdateAchievement).Methods("PUT")
 	router.HandleFunc("/achievement/{id}", achievementHandler.DeleteAchievement).Methods("DELETE")
 
@@ -47,6 +48,7 @@ func (s *Server) RegisterRoutes() http.Handler {
 	router.HandleFunc("/activity", activityHandler.CreateActivity).Methods("POST")
 	router.HandleFunc("/activity/{id}", activityHandler.GetActivityByID).Methods("GET")
 	router.HandleFunc("/activity/user/{user_id}", activityHandler.GetActivitiesByUserID).Methods("GET")
+	router.HandleFunc("/activity", activityHandler.GetAllActivities).Methods("GET")
 	router.HandleFunc("/activity/{id}", activityHandler.UpdateActivity).Methods("PUT")
 	router.HandleFunc("/activity/{id}", activityHandler.DeleteActivity).Methods("DELETE")
 
@@ -55,6 +57,7 @@ func (s *Server) RegisterRoutes() http.Handler {
 	router.HandleFunc("/thesis", thesisHandler.CreateThesis).Methods("POST")
 	router.HandleFunc("/thesis/{id}", thesisHandler.GetThesisByID).Methods("GET")
 	router.HandleFunc("/thesis/student/{student_id}", thesisHandler.GetThesesByUserID).Methods("GET")
+	router.HandleFunc("/thesis", thesisHandler.GetAllTheses).Methods("GET")
 	router.HandleFunc("/thesis/{id}", thesisHandler.UpdateThesis).Methods("PUT")
 	router.HandleFunc("/thesis/{id}", thesisHandler.DeleteThesis).Methods("DELETE")
 

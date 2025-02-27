@@ -46,17 +46,6 @@ func (r *academicRepository) DeleteAcademic(ctx context.Context, id int) error {
 	return r.db.WithContext(ctx).Delete(&models.Academic{}, id).Error
 }
 
-func (r *academicRepository) GetByUserID(ctx context.Context, userID int) (*models.Academic, error) {
-	var academic models.Academic
-	if err := r.db.WithContext(ctx).Where("user_id = ?", userID).First(&academic).Error; err != nil {
-		if err == gorm.ErrRecordNotFound {
-			return nil, nil
-		}
-		return nil, err
-	}
-	return &academic, nil
-}
-
 func (r *academicRepository) Update(ctx context.Context, academic *models.Academic) error {
 	return r.db.WithContext(ctx).Save(academic).Error
 }

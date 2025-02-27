@@ -67,6 +67,15 @@ func (h *ActivityHandler) GetActivitiesByUserID(w http.ResponseWriter, r *http.R
 	utils.SuccessResponse(w, http.StatusOK, "Activities retrieved successfully", resp)
 }
 
+func (h *ActivityHandler) GetAllActivities(w http.ResponseWriter, r *http.Request) {
+	resp, err := h.service.GetAllActivities(r.Context())
+	if err != nil {
+		utils.ServerErrorResponse(w, err)
+		return
+	}
+	utils.SuccessResponse(w, http.StatusOK, "All activities retrieved successfully", resp)
+}
+
 func (h *ActivityHandler) UpdateActivity(w http.ResponseWriter, r *http.Request) {
 	var req dto.UpdateActivityRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {

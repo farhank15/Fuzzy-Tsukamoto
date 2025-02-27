@@ -9,7 +9,6 @@ import (
 
 type AcademicRepositoryInterface interface {
 	CreateAcademic(ctx context.Context, academic *models.Academic) error
-	GetByUserID(ctx context.Context, userID int) (*models.Academic, error)
 	GetAcademicByID(ctx context.Context, id int) (*models.Academic, error)
 	GetAcademicsByUserID(ctx context.Context, userID int) ([]*models.Academic, error)
 	GetAllAcademics(ctx context.Context) ([]*models.Academic, error)
