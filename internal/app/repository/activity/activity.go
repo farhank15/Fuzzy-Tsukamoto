@@ -30,32 +30,18 @@ func (r *activityRepository) GetActivitiesByUserID(ctx context.Context, userID i
 	return activities, nil
 }
 
+func (r *activityRepository) GetAllActivities(ctx context.Context) ([]*models.Activity, error) {
+	var activities []*models.Activity
+	if err := r.db.WithContext(ctx).Find(&activities).Error; err != nil {
+		return nil, err
+	}
+	return activities, nil
+}
+
 func (r *activityRepository) UpdateActivity(ctx context.Context, activity *models.Activity) error {
 	return r.db.WithContext(ctx).Save(activity).Error
 }
 
 func (r *activityRepository) DeleteActivity(ctx context.Context, id int) error {
 	return r.db.WithContext(ctx).Delete(&models.Activity{}, id).Error
-}
-
-func (r *activityRepository) GetUserByID(ctx context.Context, id int) (*models.Users, error) {
-	var user models.Users
-	if err := r.db.WithContext(ctx).First(&user, id).Error; err != nil {
-		if err == gorm.ErrRecordNotFound {
-			return nil, nil
-		}
-		return nil, err
-	}
-	return &user, nil
-}
-
-func (r *activityRepository) GetByStudentID(ctx context.Context, studentID int) ([]models.Activity, error) {
-	var activities []models.Activity
-	if err := r.db.WithContext(ctx).Where("user_id = ?", studentID).Find(&activities).Error; err != nil {
-		if err == gorm.ErrRecordNotFound {
-			return nil, nil
-		}
-		return nil, err
-	}
-	return activities, nil
 }

@@ -9,9 +9,9 @@ import (
 
 type AchievementRepositoryInterface interface {
 	CreateAchievement(ctx context.Context, achievement *models.Achievement) error
-	GetByStudentID(ctx context.Context, studentID int) ([]models.Achievement, error)
 	GetAchievementByID(ctx context.Context, id int) (*models.Achievement, error)
 	GetAchievementsByUserID(ctx context.Context, userID int) ([]*models.Achievement, error)
+	GetAllAchievements(ctx context.Context) ([]*models.Achievement, error)
 	UpdateAchievement(ctx context.Context, achievement *models.Achievement) error
 	DeleteAchievement(ctx context.Context, id int) error
 }

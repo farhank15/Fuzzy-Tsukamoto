@@ -67,6 +67,15 @@ func (h *AchievementHandler) GetAchievementsByUserID(w http.ResponseWriter, r *h
 	utils.SuccessResponse(w, http.StatusOK, "Achievements retrieved successfully", resp)
 }
 
+func (h *AchievementHandler) GetAllAchievements(w http.ResponseWriter, r *http.Request) {
+	resp, err := h.service.GetAllAchievements(r.Context())
+	if err != nil {
+		utils.ServerErrorResponse(w, err)
+		return
+	}
+	utils.SuccessResponse(w, http.StatusOK, "All achievements retrieved successfully", resp)
+}
+
 func (h *AchievementHandler) UpdateAchievement(w http.ResponseWriter, r *http.Request) {
 	var req dto.UpdateAchievementRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {

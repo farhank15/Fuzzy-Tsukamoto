@@ -2,14 +2,12 @@ package thesis_test
 
 import (
 	"context"
-	"errors"
 	"go-tsukamoto/internal/app/models"
 	"go-tsukamoto/internal/app/repository/thesis"
 	"testing"
 
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
-	"gorm.io/gorm"
 )
 
 func TestCreateThesis(t *testing.T) {
@@ -55,6 +53,21 @@ func TestGetThesesByUserID(t *testing.T) {
 	assert.Equal(t, 1, theses[0].ID)
 }
 
+func TestGetAllTheses(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	mockRepo := thesis.NewMockThesisRepositoryInterface(ctrl)
+	mockRepo.EXPECT().GetAllTheses(gomock.Any()).Return([]*models.Thesis{{ID: 1}}, nil)
+
+	ctx := context.Background()
+	theses, err := mockRepo.GetAllTheses(ctx)
+	assert.NoError(t, err)
+	assert.NotNil(t, theses)
+	assert.Len(t, theses, 1)
+	assert.Equal(t, 1, theses[0].ID)
+}
+
 func TestUpdateThesis(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
@@ -80,32 +93,4 @@ func TestDeleteThesis(t *testing.T) {
 
 	err := mockRepo.DeleteThesis(ctx, 1)
 	assert.NoError(t, err)
-}
-
-func TestGetByUserID(t *testing.T) {
-	ctrl := gomock.NewController(t)
-	defer ctrl.Finish()
-
-	mockRepo := thesis.NewMockThesisRepositoryInterface(ctrl)
-	mockRepo.EXPECT().GetByUserID(gomock.Any(), 1).Return(&models.Thesis{ID: 1}, nil)
-
-	ctx := context.Background()
-	thesis, err := mockRepo.GetByUserID(ctx, 1)
-	assert.NoError(t, err)
-	assert.NotNil(t, thesis)
-	assert.Equal(t, 1, thesis.ID)
-}
-
-func TestGetByUserID_NotFound(t *testing.T) {
-	ctrl := gomock.NewController(t)
-	defer ctrl.Finish()
-
-	mockRepo := thesis.NewMockThesisRepositoryInterface(ctrl)
-	mockRepo.EXPECT().GetByUserID(gomock.Any(), 1).Return(nil, gorm.ErrRecordNotFound)
-
-	ctx := context.Background()
-	thesis, err := mockRepo.GetByUserID(ctx, 1)
-	assert.Error(t, err)
-	assert.Nil(t, thesis)
-	assert.True(t, errors.Is(err, gorm.ErrRecordNotFound))
 }

@@ -63,19 +63,19 @@ func (mr *MockThesisRepositoryInterfaceMockRecorder) DeleteThesis(ctx, id interf
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteThesis", reflect.TypeOf((*MockThesisRepositoryInterface)(nil).DeleteThesis), ctx, id)
 }
 
-// GetByUserID mocks base method.
-func (m *MockThesisRepositoryInterface) GetByUserID(ctx context.Context, userID int) (*models.Thesis, error) {
+// GetAllTheses mocks base method.
+func (m *MockThesisRepositoryInterface) GetAllTheses(ctx context.Context) ([]*models.Thesis, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetByUserID", ctx, userID)
-	ret0, _ := ret[0].(*models.Thesis)
+	ret := m.ctrl.Call(m, "GetAllTheses", ctx)
+	ret0, _ := ret[0].([]*models.Thesis)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// GetByUserID indicates an expected call of GetByUserID.
-func (mr *MockThesisRepositoryInterfaceMockRecorder) GetByUserID(ctx, userID interface{}) *gomock.Call {
+// GetAllTheses indicates an expected call of GetAllTheses.
+func (mr *MockThesisRepositoryInterfaceMockRecorder) GetAllTheses(ctx interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetByUserID", reflect.TypeOf((*MockThesisRepositoryInterface)(nil).GetByUserID), ctx, userID)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAllTheses", reflect.TypeOf((*MockThesisRepositoryInterface)(nil).GetAllTheses), ctx)
 }
 
 // GetThesesByUserID mocks base method.

@@ -28,6 +28,7 @@ type ThesisService interface {
 	CreateThesis(ctx context.Context, req *thesis.CreateThesisRequest) (*thesis.ThesisResponse, error)
 	GetThesisByID(ctx context.Context, id int) (*thesis.ThesisResponse, error)
 	GetThesesByUserID(ctx context.Context, userID int) ([]*thesis.ThesisResponse, error)
+	GetAllTheses(ctx context.Context) ([]*thesis.ThesisResponse, error)
 	UpdateThesis(ctx context.Context, id int, req *thesis.UpdateThesisRequest) (*thesis.ThesisResponse, error)
 	DeleteThesis(ctx context.Context, id int) error
 }

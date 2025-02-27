@@ -25,6 +25,7 @@ type ActivityService interface {
 	CreateActivity(ctx context.Context, req *activity.CreateActivityRequest) (*activity.ActivityResponse, error)
 	GetActivityByID(ctx context.Context, id int) (*activity.ActivityResponse, error)
 	GetActivitiesByUserID(ctx context.Context, userID int) ([]*activity.ActivityResponse, error)
+	GetAllActivities(ctx context.Context) ([]*activity.ActivityResponse, error)
 	UpdateActivity(ctx context.Context, id int, req *activity.UpdateActivityRequest) (*activity.ActivityResponse, error)
 	DeleteActivity(ctx context.Context, id int) error
 }

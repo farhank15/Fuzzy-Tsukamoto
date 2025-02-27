@@ -55,6 +55,21 @@ func TestGetAchievementsByUserID(t *testing.T) {
 	assert.Equal(t, 1, achievements[0].ID)
 }
 
+func TestGetAllAchievements(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	mockRepo := achievement.NewMockAchievementRepositoryInterface(ctrl)
+	mockRepo.EXPECT().GetAllAchievements(gomock.Any()).Return([]*models.Achievement{{ID: 1}}, nil)
+
+	ctx := context.Background()
+	achievements, err := mockRepo.GetAllAchievements(ctx)
+	assert.NoError(t, err)
+	assert.NotNil(t, achievements)
+	assert.Len(t, achievements, 1)
+	assert.Equal(t, 1, achievements[0].ID)
+}
+
 func TestUpdateAchievement(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
@@ -82,30 +97,15 @@ func TestDeleteAchievement(t *testing.T) {
 	assert.NoError(t, err)
 }
 
-func TestGetByStudentID(t *testing.T) {
+func TestGetAchievementsByUserID_NotFound(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
 	mockRepo := achievement.NewMockAchievementRepositoryInterface(ctrl)
-	mockRepo.EXPECT().GetByStudentID(gomock.Any(), 1).Return([]models.Achievement{{ID: 1}}, nil)
+	mockRepo.EXPECT().GetAchievementsByUserID(gomock.Any(), 1).Return(nil, gorm.ErrRecordNotFound)
 
 	ctx := context.Background()
-	achievements, err := mockRepo.GetByStudentID(ctx, 1)
-	assert.NoError(t, err)
-	assert.NotNil(t, achievements)
-	assert.Len(t, achievements, 1)
-	assert.Equal(t, 1, achievements[0].ID)
-}
-
-func TestGetByStudentID_NotFound(t *testing.T) {
-	ctrl := gomock.NewController(t)
-	defer ctrl.Finish()
-
-	mockRepo := achievement.NewMockAchievementRepositoryInterface(ctrl)
-	mockRepo.EXPECT().GetByStudentID(gomock.Any(), 1).Return(nil, gorm.ErrRecordNotFound)
-
-	ctx := context.Background()
-	achievements, err := mockRepo.GetByStudentID(ctx, 1)
+	achievements, err := mockRepo.GetAchievementsByUserID(ctx, 1)
 	assert.Error(t, err)
 	assert.Nil(t, achievements)
 	assert.True(t, errors.Is(err, gorm.ErrRecordNotFound))

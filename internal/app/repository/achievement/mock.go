@@ -93,19 +93,19 @@ func (mr *MockAchievementRepositoryInterfaceMockRecorder) GetAchievementsByUserI
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAchievementsByUserID", reflect.TypeOf((*MockAchievementRepositoryInterface)(nil).GetAchievementsByUserID), ctx, userID)
 }
 
-// GetByStudentID mocks base method.
-func (m *MockAchievementRepositoryInterface) GetByStudentID(ctx context.Context, studentID int) ([]models.Achievement, error) {
+// GetAllAchievements mocks base method.
+func (m *MockAchievementRepositoryInterface) GetAllAchievements(ctx context.Context) ([]*models.Achievement, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetByStudentID", ctx, studentID)
-	ret0, _ := ret[0].([]models.Achievement)
+	ret := m.ctrl.Call(m, "GetAllAchievements", ctx)
+	ret0, _ := ret[0].([]*models.Achievement)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// GetByStudentID indicates an expected call of GetByStudentID.
-func (mr *MockAchievementRepositoryInterfaceMockRecorder) GetByStudentID(ctx, studentID interface{}) *gomock.Call {
+// GetAllAchievements indicates an expected call of GetAllAchievements.
+func (mr *MockAchievementRepositoryInterfaceMockRecorder) GetAllAchievements(ctx interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetByStudentID", reflect.TypeOf((*MockAchievementRepositoryInterface)(nil).GetByStudentID), ctx, studentID)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAllAchievements", reflect.TypeOf((*MockAchievementRepositoryInterface)(nil).GetAllAchievements), ctx)
 }
 
 // UpdateAchievement mocks base method.

@@ -98,29 +98,15 @@ func TestDeleteAcademic(t *testing.T) {
 	assert.NoError(t, err)
 }
 
-func TestGetByUserID(t *testing.T) {
+func TestGetAcademicsByUserID_NotFound(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
 	mockRepo := academic.NewMockAcademicRepositoryInterface(ctrl)
-	mockRepo.EXPECT().GetByUserID(gomock.Any(), 1).Return(&models.Academic{ID: 1}, nil)
+	mockRepo.EXPECT().GetAcademicsByUserID(gomock.Any(), 1).Return(nil, gorm.ErrRecordNotFound)
 
 	ctx := context.Background()
-	academic, err := mockRepo.GetByUserID(ctx, 1)
-	assert.NoError(t, err)
-	assert.NotNil(t, academic)
-	assert.Equal(t, 1, academic.ID)
-}
-
-func TestGetByUserID_NotFound(t *testing.T) {
-	ctrl := gomock.NewController(t)
-	defer ctrl.Finish()
-
-	mockRepo := academic.NewMockAcademicRepositoryInterface(ctrl)
-	mockRepo.EXPECT().GetByUserID(gomock.Any(), 1).Return(nil, gorm.ErrRecordNotFound)
-
-	ctx := context.Background()
-	academic, err := mockRepo.GetByUserID(ctx, 1)
+	academic, err := mockRepo.GetAcademicsByUserID(ctx, 1)
 	assert.Error(t, err)
 	assert.Nil(t, academic)
 	assert.True(t, errors.Is(err, gorm.ErrRecordNotFound))

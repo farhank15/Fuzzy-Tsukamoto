@@ -87,6 +87,28 @@ func (s *thesisService) GetThesesByUserID(ctx context.Context, userID int) ([]*t
 	return theses, nil
 }
 
+func (s *thesisService) GetAllTheses(ctx context.Context) ([]*thesis.ThesisResponse, error) {
+	thesisModels, err := s.repo.GetAllTheses(ctx)
+	if err != nil {
+		return nil, err
+	}
+	var theses []*thesis.ThesisResponse
+	for _, thesisModel := range thesisModels {
+		theses = append(theses, &thesis.ThesisResponse{
+			ID:        thesisModel.ID,
+			UserID:    thesisModel.UserID,
+			Title:     thesisModel.Title,
+			Year:      thesisModel.Year,
+			Semester:  thesisModel.Semester,
+			Value:     thesisModel.Value,
+			Level:     thesisModel.Level,
+			CreatedAt: thesisModel.CreatedAt,
+			UpdatedAt: thesisModel.UpdatedAt,
+		})
+	}
+	return theses, nil
+}
+
 func (s *thesisService) UpdateThesis(ctx context.Context, id int, req *thesis.UpdateThesisRequest) (*thesis.ThesisResponse, error) {
 	thesisModel, err := s.repo.GetThesisByID(ctx, id)
 	if err != nil {
