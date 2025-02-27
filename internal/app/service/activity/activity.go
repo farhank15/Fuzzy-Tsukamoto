@@ -72,7 +72,7 @@ func (s *activityService) GetActivitiesByUserID(ctx context.Context, userID int)
 	if err != nil {
 		return nil, err
 	}
-	var activities []*activity.ActivityResponse
+	activities := make([]*activity.ActivityResponse, 0)
 	for _, activityModel := range activityModels {
 		activities = append(activities, &activity.ActivityResponse{
 			ID:           activityModel.ID,
