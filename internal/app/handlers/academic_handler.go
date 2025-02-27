@@ -67,6 +67,15 @@ func (h *AcademicHandler) GetAcademicsByUserID(w http.ResponseWriter, r *http.Re
 	utils.SuccessResponse(w, http.StatusOK, "Academic records retrieved successfully", resp)
 }
 
+func (h *AcademicHandler) GetAllAcademics(w http.ResponseWriter, r *http.Request) {
+	resp, err := h.service.GetAllAcademics(r.Context())
+	if err != nil {
+		utils.ServerErrorResponse(w, err)
+		return
+	}
+	utils.SuccessResponse(w, http.StatusOK, "All academic records retrieved successfully", resp)
+}
+
 func (h *AcademicHandler) UpdateAcademic(w http.ResponseWriter, r *http.Request) {
 	var req dto.UpdateAcademicRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {

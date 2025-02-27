@@ -6,7 +6,6 @@ type AcademicResponse struct {
 	ID              int       `json:"id"`
 	UserID          int       `json:"user_id"`
 	Ipk             float64   `json:"ipk"`
-	Ips             float64   `json:"ips"`
 	RepeatedCourses int       `json:"repeated_courses"`
 	Semester        int       `json:"semester"`
 	Year            int       `json:"year"`
