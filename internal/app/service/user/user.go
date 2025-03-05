@@ -11,6 +11,15 @@ import (
 )
 
 func (s *userService) CreateUser(ctx context.Context, req *user.CreateUserRequest) (*user.UserResponse, error) {
+	// Check if NIM already exists
+	existingUser, err := s.repo.GetUserByNim(ctx, req.Nim)
+	if err != nil {
+		return nil, err
+	}
+	if existingUser != nil {
+		return nil, errors.New("NIM already exists")
+	}
+
 	hashedPassword, err := utils.HashPassword(req.Password)
 	if err != nil {
 		return nil, err

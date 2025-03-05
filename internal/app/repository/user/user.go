@@ -34,6 +34,17 @@ func (r *userRepository) GetUserByUsername(ctx context.Context, username string)
 	return &user, nil
 }
 
+func (r *userRepository) GetUserByNim(ctx context.Context, nim string) (*models.Users, error) {
+	var user models.Users
+	if err := r.db.WithContext(ctx).Where("nim = ?", nim).First(&user).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, nil
+		}
+		return nil, err
+	}
+	return &user, nil
+}
+
 func (r *userRepository) UpdateUser(ctx context.Context, user *models.Users) error {
 	return r.db.WithContext(ctx).Save(user).Error
 }

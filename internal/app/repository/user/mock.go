@@ -78,6 +78,21 @@ func (mr *MockUserRepositoryInterfaceMockRecorder) GetUserByID(ctx, id interface
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetUserByID", reflect.TypeOf((*MockUserRepositoryInterface)(nil).GetUserByID), ctx, id)
 }
 
+// GetUserByNim mocks base method.
+func (m *MockUserRepositoryInterface) GetUserByNim(ctx context.Context, nim string) (*models.Users, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetUserByNim", ctx, nim)
+	ret0, _ := ret[0].(*models.Users)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetUserByNim indicates an expected call of GetUserByNim.
+func (mr *MockUserRepositoryInterfaceMockRecorder) GetUserByNim(ctx, nim interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetUserByNim", reflect.TypeOf((*MockUserRepositoryInterface)(nil).GetUserByNim), ctx, nim)
+}
+
 // GetUserByUsername mocks base method.
 func (m *MockUserRepositoryInterface) GetUserByUsername(ctx context.Context, username string) (*models.Users, error) {
 	m.ctrl.T.Helper()

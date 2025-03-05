@@ -689,6 +689,28 @@
             "description": "Internal server error"
           }
         }
+      },
+      "get": {
+        "tags": ["Activity"],
+        "summary": "Get all activities",
+        "description": "Get all activities",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "All activities retrieved successfully",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ActivityResponse"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
       }
     },
     "/activity/{id}": {
@@ -791,6 +813,42 @@
           },
           "404": {
             "description": "Activity not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/activity/user/{user_id}": {
+      "get": {
+        "tags": ["Activity"],
+        "summary": "Get activities by user ID",
+        "description": "Get activities by user ID",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Activities retrieved successfully",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ActivityResponse"
+              }
+            }
+          },
+          "404": {
+            "description": "Activities not found"
           },
           "500": {
             "description": "Internal server error"
@@ -1009,7 +1067,7 @@
       "post": {
         "tags": ["Fuzzy"],
         "summary": "Calculate fuzzy logic",
-        "description": "Calculate fuzzy logic for a student",
+        "description": "Calculate fuzzy logic for a user",
         "consumes": [
           "application/json"
         ],
@@ -1188,17 +1246,17 @@
         }
       }
     },
-    "/thesis/student/{student_id}": {
+    "/thesis/user/{user_id}": {
       "get": {
         "tags": ["Thesis"],
-        "summary": "Get theses by student ID",
-        "description": "Get theses by student ID",
+        "summary": "Get theses by user ID",
+        "description": "Get theses by user ID",
         "produces": [
           "application/json"
         ],
         "parameters": [
           {
-            "name": "student_id",
+            "name": "user_id",
             "in": "path",
             "required": true,
             "type": "integer",
@@ -1481,8 +1539,10 @@
       "required": [
         "user_id",
         "title",
-        "description",
-        "date"
+        "certificate",
+        "rank",
+        "level",
+        "year"
       ],
       "properties": {
         "user_id": {
@@ -1490,15 +1550,19 @@
         },
         "title": {
           "type": "string",
-          "maxLength": 100
+          "maxLength": 50
         },
-        "description": {
-          "type": "string",
-          "maxLength": 500
+        "certificate": {
+          "type": "boolean"
         },
-        "date": {
-          "type": "string",
-          "format": "date"
+        "rank": {
+          "type": "integer"
+        },
+        "level": {
+          "type": "string"
+        },
+        "year": {
+          "type": "integer"
         }
       }
     },
@@ -1507,15 +1571,19 @@
       "properties": {
         "title": {
           "type": "string",
-          "maxLength": 100
+          "maxLength": 50
         },
-        "description": {
-          "type": "string",
-          "maxLength": 500
+        "certificate": {
+          "type": "boolean"
         },
-        "date": {
-          "type": "string",
-          "format": "date"
+        "rank": {
+          "type": "integer"
+        },
+        "level": {
+          "type": "string"
+        },
+        "year": {
+          "type": "integer"
         }
       }
     },
@@ -1532,12 +1600,17 @@
         "title": {
           "type": "string"
         },
-        "description": {
+        "certificate": {
+          "type": "boolean"
+        },
+        "rank": {
+          "type": "integer"
+        },
+        "level": {
           "type": "string"
         },
-        "date": {
-          "type": "string",
-          "format": "date"
+        "year": {
+          "type": "integer"
         },
         "created_at": {
           "type": "string",
@@ -1553,42 +1626,31 @@
       "type": "object",
       "required": [
         "user_id",
-        "title",
-        "description",
-        "date"
+        "organization",
+        "year"
       ],
       "properties": {
         "user_id": {
           "type": "integer"
         },
-        "title": {
+        "organization": {
           "type": "string",
           "maxLength": 100
         },
-        "description": {
-          "type": "string",
-          "maxLength": 500
-        },
-        "date": {
-          "type": "string",
-          "format": "date"
+        "year": {
+          "type": "integer"
         }
       }
     },
     "UpdateActivityRequest": {
       "type": "object",
       "properties": {
-        "title": {
+        "organization": {
           "type": "string",
           "maxLength": 100
         },
-        "description": {
-          "type": "string",
-          "maxLength": 500
-        },
-        "date": {
-          "type": "string",
-          "format": "date"
+        "year": {
+          "type": "integer"
         }
       }
     },
@@ -1602,15 +1664,11 @@
         "user_id": {
           "type": "integer"
         },
-        "title": {
+        "organization": {
           "type": "string"
         },
-        "description": {
-          "type": "string"
-        },
-        "date": {
-          "type": "string",
-          "format": "date"
+        "year": {
+          "type": "integer"
         },
         "created_at": {
           "type": "string",
@@ -1695,7 +1753,7 @@
     "FuzzyResponseDTO": {
       "type": "object",
       "properties": {
-        "student_id": {
+        "user_id": {
           "type": "integer"
         },
         "ipk": {

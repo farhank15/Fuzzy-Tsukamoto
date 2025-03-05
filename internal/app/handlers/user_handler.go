@@ -8,6 +8,7 @@ import (
 	"go-tsukamoto/utils"
 	"net/http"
 	"strconv"
+	"time"
 
 	"github.com/gorilla/mux"
 	"gorm.io/gorm"
@@ -29,7 +30,11 @@ func (h *UserHandler) RegisterUser(w http.ResponseWriter, r *http.Request) {
 	}
 	resp, err := h.service.CreateUser(r.Context(), &req)
 	if err != nil {
-		utils.ServerErrorResponse(w, err)
+		if err.Error() == "NIM already exists" {
+			utils.ErrorResponse(w, http.StatusConflict, err.Error(), nil)
+		} else {
+			utils.ServerErrorResponse(w, err)
+		}
 		return
 	}
 	utils.SuccessResponse(w, http.StatusOK, "User registered successfully", resp)
@@ -59,6 +64,17 @@ func (h *UserHandler) LoginUser(w http.ResponseWriter, r *http.Request) {
 		utils.ServerErrorResponse(w, err)
 		return
 	}
+
+	// Set the JWT token in the cookies
+	http.SetCookie(w, &http.Cookie{
+		Name:     "token",
+		Value:    token,
+		Expires:  time.Now().Add(24 * time.Hour),
+		HttpOnly: true,
+		Secure:   true, // Set to true if using HTTPS
+		SameSite: http.SameSiteNoneMode,
+	})
+
 	utils.SuccessResponse(w, http.StatusOK, "Login successful", map[string]string{"access": token})
 }
 
