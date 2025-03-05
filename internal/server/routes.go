@@ -56,7 +56,7 @@ func (s *Server) RegisterRoutes() http.Handler {
 	thesisHandler := handlers.NewThesisHandler(s.thesisService)
 	router.HandleFunc("/thesis", thesisHandler.CreateThesis).Methods("POST")
 	router.HandleFunc("/thesis/{id}", thesisHandler.GetThesisByID).Methods("GET")
-	router.HandleFunc("/thesis/student/{student_id}", thesisHandler.GetThesesByUserID).Methods("GET")
+	router.HandleFunc("/thesis/user/{user_id}", thesisHandler.GetThesesByUserID).Methods("GET")
 	router.HandleFunc("/thesis", thesisHandler.GetAllTheses).Methods("GET")
 	router.HandleFunc("/thesis/{id}", thesisHandler.UpdateThesis).Methods("PUT")
 	router.HandleFunc("/thesis/{id}", thesisHandler.DeleteThesis).Methods("DELETE")
