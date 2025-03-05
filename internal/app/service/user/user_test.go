@@ -35,6 +35,7 @@ func TestCreateUser(t *testing.T) {
 			StartYear: 2023,
 		}
 
+		mockRepo.EXPECT().GetUserByNim(ctx, req.Nim).Return(nil, nil)
 		mockRepo.EXPECT().CreateUser(ctx, gomock.Any()).DoAndReturn(func(_ context.Context, user *models.Users) error {
 			user.ID = 1 // Simulate ID generation
 			return nil
@@ -51,11 +52,27 @@ func TestCreateUser(t *testing.T) {
 		assert.Equal(t, req.StartYear, response.StartYear)
 	})
 
+	t.Run("NIM Already Exists", func(t *testing.T) {
+		req := &user.CreateUserRequest{
+			Username: "testuser",
+			Nim:      "123456789",
+		}
+
+		mockRepo.EXPECT().GetUserByNim(ctx, req.Nim).Return(&models.Users{ID: 1}, nil)
+
+		response, err := service.CreateUser(ctx, req)
+
+		assert.Error(t, err)
+		assert.Equal(t, "NIM already exists", err.Error())
+		assert.Nil(t, response)
+	})
+
 	t.Run("Repository Error", func(t *testing.T) {
 		req := &user.CreateUserRequest{
 			Username: "testuser",
 		}
 
+		mockRepo.EXPECT().GetUserByNim(ctx, req.Nim).Return(nil, nil)
 		mockRepo.EXPECT().CreateUser(ctx, gomock.Any()).Return(errors.New("database error"))
 
 		response, err := service.CreateUser(ctx, req)

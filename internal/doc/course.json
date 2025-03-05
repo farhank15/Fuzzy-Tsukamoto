@@ -1,52 +1,68 @@
 [
-  {
-    "code": "CS101",
-    "course_name": "Introduction to Computer Science",
-    "credit_course": 3
-  },
-  {
-    "code": "CS102",
-    "course_name": "Data Structures",
-    "credit_course": 4
-  },
-  {
-    "code": "CS103",
-    "course_name": "Algorithms",
-    "credit_course": 3
-  },
-  {
-    "code": "CS104",
-    "course_name": "Operating Systems",
-    "credit_course": 3
-  },
-  {
-    "code": "CS105",
-    "course_name": "Computer Networks",
-    "credit_course": 3
-  },
-  {
-    "code": "CS106",
-    "course_name": "Database Systems",
-    "credit_course": 3
-  },
-  {
-    "code": "CS107",
-    "course_name": "Software Engineering",
-    "credit_course": 3
-  },
-  {
-    "code": "CS108",
-    "course_name": "Artificial Intelligence",
-    "credit_course": 3
-  },
-  {
-    "code": "CS109",
-    "course_name": "Machine Learning",
-    "credit_course": 3
-  },
-  {
-    "code": "CS110",
-    "course_name": "Computer Graphics",
-    "credit_course": 3
-  }
+  {"code": "TINFKKM4063", "course_name": "Cloud Computing (TJ)", "credit_course": 3},
+  {"code": "TINFKKM4073", "course_name": "Cyber Law (TJ)", "credit_course": 3},
+  {"code": "TINFKKM4083", "course_name": "Deep Learning (DS)", "credit_course": 3},
+  {"code": "TINFKKM4093", "course_name": "Computer Vision (DS)", "credit_course": 3},
+  {"code": "TINFKKM5063", "course_name": "IoT (TJ)", "credit_course": 3},
+  {"code": "TINFKKM5073", "course_name": "Keamanan Jaringan (TJ)", "credit_course": 3},
+  {"code": "TINFKKM5083", "course_name": "Fuzzy Logic (DS)", "credit_course": 3},
+  {"code": "TINFKKM5093", "course_name": "Sistem Informasi Geografis (DS)", "credit_course": 3},
+  {"code": "TINFKM1013", "course_name": "Fisika", "credit_course": 3},
+  {"code": "TINFKM1023", "course_name": "Logika Informatika", "credit_course": 3},
+  {"code": "TINFKM1033", "course_name": "Pengantar Teknologi Informasi", "credit_course": 3},
+  {"code": "TINFKM1043", "course_name": "Algoritma dan Pemrograman + Praktikum", "credit_course": 3},
+  {"code": "TINFKM2013", "course_name": "Arsitektur dan Organisasi Komputer", "credit_course": 3},
+  {"code": "TINFKM2023", "course_name": "Basis Data", "credit_course": 3},
+  {"code": "TINFKM2033", "course_name": "Kalkulus", "credit_course": 3},
+  {"code": "TINFKM2043", "course_name": "Sistem Operasi", "credit_course": 3},
+  {"code": "TINFKM2053", "course_name": "Pemrograman Web Dasar + Praktikum", "credit_course": 3},
+  {"code": "TINFKM3013", "course_name": "Perancangan Perangkat Lunak", "credit_course": 3},
+  {"code": "TINFKM3023", "course_name": "Struktur Data + Praktikum", "credit_course": 3},
+  {"code": "TINFKM3033", "course_name": "Interaksi Manusia dan Komputer", "credit_course": 3},
+  {"code": "TINFKM3043", "course_name": "Matematika Diskrit", "credit_course": 3},
+  {"code": "TINFKM3053", "course_name": "Riset Operasi", "credit_course": 3},
+  {"code": "TINFKM3063", "course_name": "Design dan Analisis Algoritma", "credit_course": 3},
+  {"code": "TINFKM3073", "course_name": "Jaringan Komputer + Praktikum", "credit_course": 3},
+  {"code": "TINFKM4013", "course_name": "Pemrograman Berbasis Objek + Praktikum", "credit_course": 3},
+  {"code": "TINFKM4023", "course_name": "Pemrograman Web Lanjut + Praktikum", "credit_course": 3},
+  {"code": "TINFKM4033", "course_name": "Jaringan Nirkabel", "credit_course": 3},
+  {"code": "TINFKM4043", "course_name": "Komunikasi Data", "credit_course": 3},
+  {"code": "TINFKM4053", "course_name": "Metode Penelitian", "credit_course": 3},
+  {"code": "TINFKM5013", "course_name": "Statistika", "credit_course": 3},
+  {"code": "TINFKM5023", "course_name": "Audit Sistem Informasi", "credit_course": 3},
+  {"code": "TINFKM5033", "course_name": "Big Data", "credit_course": 3},
+  {"code": "TINFKM5043", "course_name": "Technopreneurship", "credit_course": 3},
+  {"code": "TINFKM5053", "course_name": "Grafika Komputer + Praktikum", "credit_course": 3},
+  {"code": "TINFKM6013", "course_name": "Arsitektur Enterprise", "credit_course": 3},
+  {"code": "TINFKM6023", "course_name": "Kerja Praktek", "credit_course": 3},
+  {"code": "TINFKM6033", "course_name": "KKN", "credit_course": 3},
+  {"code": "TINFKM6043", "course_name": "Kriptografi", "credit_course": 3},
+  {"code": "TINFKM6053", "course_name": "Manajemen Proyek", "credit_course": 3},
+  {"code": "TINFKM6063", "course_name": "Manajemen Resiko", "credit_course": 3},
+  {"code": "TINFKM7013", "course_name": "Administrasi Jaringan", "credit_course": 3},
+  {"code": "TINFKM8014", "course_name": "Skripsi Dan Publikasi Ilmiah", "credit_course": 4},
+  {"code": "TINFPKM7013", "course_name": "Aplikasi Mobile", "credit_course": 3},
+  {"code": "TINFPKM7023", "course_name": "Teknologi Multimedia", "credit_course": 3},
+  {"code": "TINFPKM7033", "course_name": "Keamanan Sistem Informasi", "credit_course": 3},
+  {"code": "TINFPKM7043", "course_name": "Sistem Terdistribusi", "credit_course": 3},
+  {"code": "TINFPKM7053", "course_name": "Business Intelligence", "credit_course": 3},
+  {"code": "TINFP5013", "course_name": "Teknologi Multimedia", "credit_course": 3},
+  {"code": "TINFP5023", "course_name": "Keamanan Sistem Informasi", "credit_course": 3},
+  {"code": "TINFP6013", "course_name": "Kecerdasan Buatan", "credit_course": 3},
+  {"code": "TINFP6023", "course_name": "Bio Informatika", "credit_course": 3},
+  {"code": "TINFP6032", "course_name": "Business Intelligence", "credit_course": 2},
+  {"code": "TINFP7012", "course_name": "Machine Learning", "credit_course": 2},
+  {"code": "TINFP7021", "course_name": "Prak. Aplikasi Mobile", "credit_course": 1},
+  {"code": "TINFP7032", "course_name": "Aplikasi Mobile", "credit_course": 2},
+  {"code": "TINFP7042", "course_name": "Komputasi Klaster", "credit_course": 2},
+  {"code": "TINFP7053", "course_name": "Teknologi Smart City", "credit_course": 3},
+  {"code": "TINFP7063", "course_name": "Remote Sensing", "credit_course": 3},
+  {"code": "TINFP7073", "course_name": "Robotik", "credit_course": 3},
+  {"code": "TINFP7082", "course_name": "Digital Forensik", "credit_course": 2},
+  {"code": "UN1012", "course_name": "Pendidikan Agama", "credit_course": 2},
+  {"code": "UN1022", "course_name": "Pendidikan Pancasila", "credit_course": 2},
+  {"code": "UN1032", "course_name": "Sejarah Pergerakan Nasional", "credit_course": 2},
+  {"code": "UN2012", "course_name": "Bahasa Indonesia", "credit_course": 2},
+  {"code": "UN2022", "course_name": "Kewarganegaraan", "credit_course": 2, "jenis": "Blok"},
+  {"code": "UN4013", "course_name": "Kapita Selekta Migas dan Energi", "credit_course": 3}
 ]
